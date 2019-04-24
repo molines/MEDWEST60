@@ -41,16 +41,17 @@
 
 ### Create your MEDWEST60 configuration
    With DCM, the creation of a new configuration (*e.g* `MEDWEST60-GSL01`) is a few-steps procedure:
-  1. Create the directories used for your config.  
+  1. Create the directories used for your config.    
      `dcm_mkconfdir_remote MEDWEST60-GSL01`  
      > Note that at IDRIS, the storage area is on a different machine (`ergon`) that the production machine (`ada`). This is why we use `dcm_mkconfdir_remote` instead of `dcm_mkconfdir_local`.
-  1. Edit the basic `makefile` for importing eNATL60 code.
+  1. Edit the basic `makefile` for importing eNATL60 code.   
      `cd $UDIR/CONFIG_MEDWEST60/MEDWEST60-GSL01`  
      You need to edit the `makefile` for some points:
 
      ````
      ...
-     PREV_CONFIG = $(HOMEDCM)/CONFIGS/eNATL60-BLBT02
+     PREV_CONFIG = $(HOMEDCM)/CONFIGS/eNATL60.L300-BLBT02
+
      ...
      ```
 
