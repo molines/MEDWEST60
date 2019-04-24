@@ -152,12 +152,14 @@
      In `v1.2` 6825 grid points were modified (set to 2890). This is less than 1% of the grid points.
 
 #### *Decision:* 
-
+  Choice is to be made among the following:
+  1. Use 198 vertical level (remember that last level is masked). 
+  1. Redefine a 150 level grid with maximum depth of 3200 m (actual maximum in bathy `v1.1`)
 
 
 ### Domain decomposition
    *  This configuration is developped for running a small ensemble (10 to 20 members) at IDRIS center, on the `ada` machine (where the biggest class allows for 2048 cores).  
-      Using `MPP_PREP` tool, we obtain possible  domain decomposition, first for a single member affording 2000 cores, and then for a 10 members run (each member on 200 cores) or 20 members run (each member on 100 cores).
+      Using `MPP_PREP` tool, we obtain possible  domain decomposition, first for a single member affording 2000 or 1000 cores, and then for a 10 members run (each member on 200 cores) or 20 members run (each member on 100 cores).
 
  
    ```
@@ -165,6 +167,9 @@
      -----------------------------------------------------
       51    84    20    12        240  2000  2284  0.67850
      121    34    10    26        260  2000  2114  0.73504
+
+      16   126    57     9        513  1000  1016  0.72515
+      41    50    24    19        456  1000  1050  0.64457
      
       10    37    90    24       2160   200   170  0.61065
       26    14    36    60       2160   200   164  0.61065
@@ -197,5 +202,6 @@
 ### Setup `includefile.ksh`
 
 ### Discuss XIOS issues
+  * setting the xml files
 
 ## Preparing the Ensemble code:
