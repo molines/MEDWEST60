@@ -110,7 +110,8 @@
        ncks -d x,5529,6409 -d y,1869,2671 eNATL60_coordinates_v3.nc4 MEDWEST60_coordinates_v1.nc
    ```
 
-     We end up with a horizontal domain of `881 x 803` grid points.
+     We end up with a  horizontal domain of `881 x 803` grid points.  
+     ![](../figures/MEDWEST60_domain.png)
 
    * Bathymetry v1 is obtained with the following :
 
