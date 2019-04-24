@@ -190,6 +190,7 @@
      * Western BDY is located at the Gibraltar Strait, the Eastern BDT across Corsica and Sardegna.  
      * extract the mesh_mask for the boundaries (with a rim of 10 ?) and use Sosie3 for building the boundaries from eNATL60 files.  
    * Tides at the boundaries comes from the eNATL60 SSH and velocities (no harmonic constituents at the boundaries, but tidal potential ON).
+   * See [this report](Making-of-BDY.md) for details of the construction of the BDY Data set.
 
 ### Forcing and Runoff:
    * eNATL60 was forced by DFS5.2 fields (EraInterim grid).
