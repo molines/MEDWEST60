@@ -94,11 +94,17 @@
      
      
 ---------------------------
+---------------------------
+---------------------------
+---------------------------
 
 
 ## History of MEDWEST60 preparation:
+   ALL configuration files will be kept on `ige-meom-cal1.u-ga.fr` in `/mnt/meom/MODEL_SET/MEDWEST60/MEDWEST60-I/`  
+   All configuration files will (hopefully) have a version number, in order to identify then unambiguously.  
+   A `README.md` file will briefly describe the files and their version.    
 ### Geographical domain: Bathymetry and coordinates.
-   * Domain : we extract the MEDWEST60 domain from eNATL60 domain using the following ncks command
+   * Domain : We extract the MEDWEST60 domain from eNATL60 domain using the following ncks command
 
    ```
        ncks -d x,5529,6409 -d y,1869,2671 eNATL60_coordinates_v3.nc4 MEDWEST60_coordinates_v1.nc
@@ -113,6 +119,7 @@
    ```
 
       * Then the Bay of Biscay has been filled up using `cdfbathy` tool (as well as some points, east of Corsica where the Eastern Open boundary lays). This produced the version `v1.1`.  
+      * We limit the maximum depth to 2890m (see below) to produce `v1.2`.
 
 ### Vertical grid:
   `eNATL60` uses a 300 level grid. In the `MEDWEST60` configuration we aim at using only 150 vertical levels.
