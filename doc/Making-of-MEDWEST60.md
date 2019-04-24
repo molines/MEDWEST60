@@ -1,7 +1,7 @@
 # Making MEDWEST60 configuration
 
 ## Installing the NEMO code for this configuration
-  This config share the same code as the eNATL60 experiment performed within PRACE Resumption project achieved at BSC on `marenostrum4` super computer, by Laurent Brodeau.  
+  This config share the same code as the eNATL60 experiment performed within [PRACE Resumption](https://ocean-next.fr/expertise/natl60/) project achieved at BSC on `marenostrum4` super computer, by Laurent Brodeau.  
   It is based on :
    * NEMO release 3-6 @rev 10404
    * XIOS 2.0  @ rev 1630
