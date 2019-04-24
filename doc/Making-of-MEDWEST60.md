@@ -12,16 +12,87 @@
    * assume git repositories are in `$WORKDIR/DEVGIT` aka `$DEVGIT`
 
 ### Installing DCM:
-   You need to have an access to `ige-meom-cal1.u-ga.fr`
+   You need to have an access to `ige-meom-cal1.u-ga.fr`.  This action is to be done only once.
 
 ```
     cd $DEVGIT
     git clone ssh://<USER>@ige-meom-cal1.u-ga.fr/mnt/SSD/molines/GITSERVER/NEMODRAK_release-3.6.git
 ```
-  See how to set up DCM in your environnement on this [documentation](DCM_getting_started.md)
+  See how to set up DCM in your environnement in the `dcm_getting_started.md` document in `NEMODRAK_release-3.6/DOC/`.
+
+### Installing XIOS:
+   This is also to be done once, and for that we just checkout the *ad-hoc* revision of XIOS, and follow the instruction to compile the code and libraries.  
+  1. Checkout the code:  
+
+    ```
+    cd $DEVDIR
+    svn co  http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/branchs/xios-2.0 -r 1630   xios-2.0_rev_1630
+    ```
+
+  1. Compile XIOS
+
+    ```
+    cd xios-2.0_rev_1630
+    ./make_xios --job 6 --arch X64_ADA
+    ```
+
+    At this stage, if the previous `make_xios` was successful, you end up with an operational XIOS in `$DEVDIR/xios-2.0_rev_1630`
+
 
 ### Create your MEDWEST60 configuration
+   With DCM, the creation of a new configuration (*e.g* `MEDWEST60-GSL01`) is a few-steps procedure:
+  1. Create the directories used for your config.  
+     `dcm_mkconfdir_remote MEDWEST60-GSL01`  
+     > Note that at IDRIS, the storage area is on a different machine (`ergon`) that the production machine (`ada`). This is why we use `dcm_mkconfdir_remote` instead of `dcm_mkconfdir_local`.
+  1. Edit the basic `makefile` for importing eNATL60 code.
+     `cd $UDIR/CONFIG_MEDWEST60/MEDWEST60-GSL01`  
+     You need to edit the `makefile` for some points:
 
+     ````
+     ...
+     PREV_CONFIG = $(HOMEDCM)/CONFIGS/eNATL60-BLBT02
+     ...
+     ```
+
+     `make copyconfigall`  
+     This last instruction will import eNATL60  code and CPP keys in your configuration directory. 
+  1. Edit the CPP.keys (imported from eNATL60) and remove `key_lim3` (no ice model).   
+  1. Customize the architecture file:  
+   `dcm_lsarch.ksh` will list all available architecture files in NEMO and DCM.  
+   `cp .../arch-X64_ADAuser.fcm ARCH/arch-X64_ADAsl.fcm`  
+   edit this file to fit with your XIOS library location:  
+
+   ```
+   %XIOS_HOME           $DEVDIR/xios-2.0_rev_1630
+   ```
+
+  1. Edit makefile again:  
+    
+     ```
+     ...
+     MACHINE = X64_ADAsl
+     # NCOMPIL_PROC : number of procs to use for the compilation of the code.
+     NCOMPIL_PROC = 6   # up to you !
+     ...
+     OPA = 'use'
+     LIM2 = 'notused'
+     LIM3 = 'notused'
+     ...
+     SVN = 'nocheck'
+     GIT = 'check'
+     ...
+     ```
+
+  1. Install the code and compile:   
+
+     ```
+     make install && make
+     ```
+
+
+     
+     
+---------------------------
 
 
 ## History of MEDWEST60 preparation:
@@ -32,6 +103,8 @@
        ncks -d x,5529,6409 -d y,1869,2671 eNATL60_coordinates_v3.nc4 MEDWEST60_coordinates_v1.nc
    ```
 
+     We end up with a horizontal domain of `881 x 803` grid points.
+
    * Bathymetry v1 is obtained with the following :
 
    ```
@@ -39,6 +112,40 @@
    ```
 
       * Then the Bay of Biscay has been filled up using `cdfbathy` tool (as well as some points, east of Corsica where the Eastern Open boundary lays). This produced the version `v1.1`.  
+
+### Vertical grid:
+  `eNATL60` uses a 300 level grid. In the `MEDWEST60` configuration we aim at using only 150 vertical levels.
+#### *Issues:*   
+  1. Level 150 is only 1830 m deep.
+
+     ```
+     ...
+     z(149) t(1) gdept_0(149)=1809.34 
+     z(150) t(1) gdept_0(150)=1830.41 
+     z(151) t(1) gdept_0(151)=1851.55 
+     ...
+     ```
+
+  1. The bathymetry can be ceiled to 2890m (level 197) --> `v1.2`
+
+     ```
+     z(195) t(1) gdept_0(195)=2842.78 
+     z(196) t(1) gdept_0(196)=2866.5 
+     z(197) t(1) gdept_0(197)=2890.26 
+     z(198) t(1) gdept_0(198)=2914.07 
+     z(199) t(1) gdept_0(199)=2937.92 
+     z(200) t(1) gdept_0(200)=2961.82 
+     z(201) t(1) gdept_0(201)=2985.77 
+     z(202) t(1) gdept_0(202)=3009.77 
+     z(203) t(1) gdept_0(203)=3033.81 
+     z(204) t(1) gdept_0(204)=3057.9
+     ```
+
+     In `v1.2` 6825 grid points were modified (set to 2890). This is less than 1% of the grid points.
+
+#### *Decision:* 
+
+
 
 ### Domain decomposition
    *  This configuration is developped for running a small ensemble (10 to 20 members) at IDRIS center, on the `ada` machine (where the biggest class allows for 2048 cores).  
