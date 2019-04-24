@@ -101,7 +101,7 @@
 
 ## History of MEDWEST60 preparation:
    All configuration files will be kept on `ige-meom-cal1.u-ga.fr` in `/mnt/meom/MODEL_SET/MEDWEST60/MEDWEST60-I/`  
-   All configuration files will (hopefully) have a version number, in order to identify then unambiguously.  
+   All configuration files will (hopefully) have a version number, in order to identify them unambiguously.  
    A `README.md` file will briefly describe the files and their version.    
 ### Geographical domain: Bathymetry and coordinates.
    * Domain : We extract the MEDWEST60 domain from eNATL60 domain using the following ncks command
