@@ -232,7 +232,7 @@ To use the modified code in DCM:
      getfile step.F90
      getfile dom_oce.F90
      ```
-   * replace them by their modified version
+   * replace them by their modified version (from the src directory in this repository)
    * recompile the code by:
      ```bash
      make
