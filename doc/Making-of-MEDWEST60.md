@@ -221,7 +221,7 @@ The ensemble code requires modifications in the following Fortran files:
 All modfications to the code can easily be traced be searching the string "ensemble" in the code.
 
 To use the modified code in DCM:
-   * get file that need to be modified:
+   * get the files that need to be modified in compilation directory:
      ```bash
      getfile lib_mpp.F90
      getfile nemogcm.F90
