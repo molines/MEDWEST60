@@ -210,15 +210,15 @@
 
 The ensemble code requires modifications in the following Fortran files:
    * lib\_mpp.F90 : definition of the MPI communicators for each member and each subdomain
-   * nemogcm.F90 : modified call to parallelization, ensemble XIOS context, ensemble ocean.output
-   * domain.F90 : modified name of the experiment (to include member index)
-   * stopar.F90 : different seed of the random generator, different restart filenames
-   * diaobs.F90 : different names for the files with model equivalent to observations
-   * stpctl.F90 : different names for the files 'time.step' and 'solver.stat'
+   * nemogcm.F90 : modified call to parallelization, multiple XIOS context, multiple ocean.output
+   * domain.F90 : multiple name of the experiment (to include member index)
+   * stopar.F90 : multiple seed of the random generator, multiple restart filenames
+   * diaobs.F90 : multiple names for the files with model equivalent to observations
+   * stpctl.F90 : multiple names for the files 'time.step' and 'solver.stat'
    * step.F90 : always call to stochastic routines in ensemble experiments
    * dom\_oce.F90 : integer and character string defining member index
 
-All modfications to the code can easily be traced be searching the string "ensemble" in the code.
+All modfications to the code can easily be traced by searching the string "ensemble" in the code.
 
 To use the modified code in DCM:
    * get the files that need to be modified in compilation directory:
