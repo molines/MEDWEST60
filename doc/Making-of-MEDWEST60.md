@@ -104,23 +104,29 @@
    All configuration files will (hopefully) have a version number, in order to identify them unambiguously.  
    A `README.md` file will briefly describe the files and their version.    
 ### Geographical domain: Bathymetry and coordinates.
-   * Domain : We extract the MEDWEST60 domain from eNATL60 domain using the following ncks command
+   * Domain : We extract the MEDWEST60 domain from eNATL60 domain using the following ncks command (extension of 2 points to the east (v3) compared to v1)
 
    ```
-       ncks -d x,5529,6409 -d y,1869,2671 eNATL60_coordinates_v3.nc4 MEDWEST60_coordinates_v1.nc
+       ncks -4 -L 1 -d x,5529,6411 -d y,1869,2671 eNATL60_coordinates_v3.nc4 MEDWEST60_coordinates_v3.nc4
    ```
 
-     We end up with a  horizontal domain of `881 x 803` grid points.  
+     We end up with a  horizontal domain of `883 x 803` grid points.  
      ![](../figures/MEDWEST60_domain.png)
 
-   * Bathymetry v1 is obtained with the following :
+   * Bathymetry v3 is obtained with the following :
+```ncks -4 -L 1 -d x,5529,6411 -d y,1869,2671  eNATL60_BATHY_GEBCO_2014_2D_msk_v3_merg.nc4 MEDWEST60_Bathymetry_v3.nc```
+   
+   * Then the following modifications are applied to the bathymetry: 
+        * v3.1: Fill in Gulf of Gascogne with zeros
+        `cdfbathy -file MEDWEST60_Bathymetry_v3.nc4 -zoom -zoom 1 243 655 803 -raz_zone`
+        * v3.2 Fill in small bay on the west coast of Cap Corse with zeros
+        `cdfbathy -file MEDWEST60_Bathymetry_v3.1.nc4 -zoom 883 883 671 673 -raz_zone`
+        * v3.3: Fill in small bay on the south west coast of corsica with zeros
+        `cdfbathy -file MEDWEST60_Bathymetry_v3.2.nc4 -zoom 878 883 550 556 -raz_zone`
+        * v3.4: Ceil bathymetry to 2890 m (level 197 in the eNATL60 config)
+        `cdfbathy -file MEDWEST60_Bathymetry_v3.3.nc4 -set_above 2890`   
+        
 
-   ```
-      ncks -d x,5529,6409 -d y,1869,2671  eNATL60_BATHY_GEBCO_2014_2D_msk_v3_merg.nc4 MEDWEST60_Bathymetry_v1.nc
-   ```
-
-      * Then the Bay of Biscay has been filled up using `cdfbathy` tool (as well as some points, east of Corsica where the Eastern Open boundary lays). This produced the version `v1.1`.  
-      * We limit the maximum depth to 2890m (see below) to produce `v1.2`.
 
 ### Vertical grid:
   `eNATL60` uses a 300 level grid. In the `MEDWEST60` configuration we aim at using only 150 vertical levels.
@@ -135,7 +141,7 @@
      ...
      ```
 
-  1. The bathymetry can be ceiled to 2890m (level 197) --> `v1.2`
+  1. The bathymetry can be ceiled to 2890m (level 197) --> `v3.4`
 
      ```
      z(195) t(1) gdept_0(195)=2842.78 
@@ -155,8 +161,8 @@
 #### *Decision:* 
   Choice is to be made among the following:
   1. Use 198 vertical level (remember that last level is masked). 
-  1. Redefine a 150 level grid with maximum depth of 3200 m (actual maximum in bathy `v1.1`)
-
+  1. Redefine a 150 level grid with maximum depth of 3200 m (actual maximum in bathy `v3.3`)
+  --> Choise is made to use 198 levels (first option after bathymetry has been ceiled to 2890m).
 
 ### Domain decomposition
    *  This configuration is developped for running a small ensemble (10 to 20 members) at IDRIS center, on the `ada` machine (where the biggest class allows for 2048 cores).  
@@ -185,6 +191,7 @@
       * With which level of smoothing (hourly average, daily average, monthly average ?)
       * Still a cold start with U and V set to 0. ?
       * Using a restart extraction ??
+    --> Firat choice is to use a restart extraction.
 
 ### Open Boundaries
    * Likely eNATL60 hourly data for T S U V and SSH.
