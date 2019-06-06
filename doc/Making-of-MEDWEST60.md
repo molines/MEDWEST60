@@ -162,7 +162,8 @@
   Choice is to be made among the following:
   1. Use 198 vertical level (remember that last level is masked). 
   1. Redefine a 150 level grid with maximum depth of 3200 m (actual maximum in bathy `v3.3`)
-  --> Choise is made to use 198 levels (first option after bathymetry has been ceiled to 2890m).
+  
+  --> __Choise is made to use 198 levels (first option after bathymetry has been ceiled to 2890m).__
 
 ### Domain decomposition
    *  This configuration is developped for running a small ensemble (10 to 20 members) at IDRIS center, on the `ada` machine (where the biggest class allows for 2048 cores).  
